@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: security-demo-01
+  mvc:
+    view:
+      prefix: "/WEB-INF/jsp/"
+      suffix: ".jsp"
