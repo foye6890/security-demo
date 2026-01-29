@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/security_db
+    username: postgres
+    password: postgres
   application:
     name: security-demo-01
   security:
@@ -23,7 +28,11 @@ spring:
     view:
       prefix: "/WEB-INF/jsp/"
       suffix: ".jsp"
-
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.security.demo.auth.mapper
+  configuration:
+    map-underscore-to-camel-case: true
 logging:
   level:
     org.springframework.security: TRACE

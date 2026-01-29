@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.security.demo.auth.mapper.UserPermissionMapper">
+
+  <!-- ResultMap -->
+  <resultMap id="UserPermissionResultMap" type="com.security.demo.model.entity.UserPermission">
+    <id     property="id"         column="id"/>
+    <result property="userId"     column="user_id"/>
+    <result property="resource"   column="resource"/>
+    <result property="action"     column="action"/>
+    <result property="permission" column="permission"/>
+    <result property="grantedAt"  column="granted_at"/>
+  </resultMap>
+
+  <!-- Spring Security 授权用（最重要） -->
+  <select id="selectPermissionsByUserId" resultType="string">
+    SELECT permission
+    FROM user_permission
+    WHERE user_id = #{userId}
+  </select>
+
+  <!-- 查询完整权限 -->
+  <select id="selectByUserId" resultMap="UserPermissionResultMap">
+    SELECT
+    id,
+    user_id,
+    resource,
+    action,
+    permission,
+    granted_at
+    FROM user_permission
+    WHERE user_id = #{userId}
+    ORDER BY resource, action
+  </select>
+
+  <!-- 插入权限 -->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO user_permission (
+    user_id,
+    resource,
+    action,
+    permission,
+    granted_at
+    ) VALUES (
+    #{userId},
+    #{resource},
+    #{action},
+    #{permission},
+    NOW()
+    )
+  </insert>
+
+  <!-- 删除指定权限 -->
+  <delete id="delete">
+    DELETE FROM user_permission
+    WHERE user_id = #{userId}
+    AND resource = #{resource}
+    AND action = #{action}
+  </delete>
+
+</mapper>
